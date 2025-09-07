@@ -1,0 +1,51 @@
+name: Notify Team on Push
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Collect Commit Info
+        id: commit_info
+        run: |
+          AUTHOR_NAME=$(git log -1 --pretty=format:'%an')
+          COMMIT_HASH=$(git log -1 --pretty=format:'%H')
+          CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r $COMMIT_HASH)
+
+          echo "AUTHOR_NAME=$AUTHOR_NAME" >> $GITHUB_ENV
+          echo "COMMIT_HASH=$COMMIT_HASH" >> $GITHUB_ENV
+          echo "CHANGED_FILES=$CHANGED_FILES" >> $GITHUB_ENV
+
+      - name: Send Email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ${{ secrets.SMTP_SERVER }}
+          server_port: ${{ secrets.SMTP_PORT }}
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: "🔔 New Push by ${{ env.AUTHOR_NAME }}"
+          from: ${{ secrets.SMTP_USERNAME }} # Smanga's email
+          to: ${{ secrets.TEAM_EMAILS }}
+          content_type: text/html
+          body: |
+            <html>
+              <body style="font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px;">
+                <div style="background: #ffffff; border-radius: 8px; padding: 20px; box-shadow: 0px 2px 6px rgba(0,0,0,0.1);">
+                  <h2 style="color: #2d89ef;">🚀 Code Update Notification</h2>
+                  <p><strong>Author:</strong> ${{ env.AUTHOR_NAME }}</p>
+                  <p><strong>Commit Hash:</strong> <code>${{ env.COMMIT_HASH }}</code></p>
+                  <p><strong>Files Changed:</strong></p>
+                  <ul>
+                  ${{ join(fromJson('["' + replace(env.CHANGED_FILES, '\n', '","') + '"]'), '<li>', '</li>') }}
+                  </ul>
+                  <p style="margin-top:20px;">Keep hacking! 💻🔥</p>
+                </div>
+              </body>
+            </html>
