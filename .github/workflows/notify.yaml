@@ -46,7 +46,8 @@ jobs:
           username: ${{ secrets.SMTP_USERNAME }}
           password: ${{ secrets.SMTP_PASSWORD }}
           subject: "🔔 New Push by ${{ github.actor }}"
-          from: ${{ secrets.SMTP_USERNAME }}
-          to: ${{ secrets.TEAM_EMAILS }}
+          from: "no-reply@yourdomain.com"
+          to: "alice@example.com,bob@example.com,charlie@example.com"
           content_type: text/html
-          body: ${{ env.HTML_BODY }}
+          body: |
+            ${{ env.HTML_BODY }}
