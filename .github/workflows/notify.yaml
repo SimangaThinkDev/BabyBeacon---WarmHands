@@ -19,9 +19,24 @@ jobs:
           COMMIT_HASH=$(git log -1 --pretty=format:'%H')
           CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r $COMMIT_HASH)
 
-          echo "AUTHOR_NAME=$AUTHOR_NAME" >> $GITHUB_ENV
-          echo "COMMIT_HASH=$COMMIT_HASH" >> $GITHUB_ENV
-          echo "CHANGED_FILES=$CHANGED_FILES" >> $GITHUB_ENV
+          FILE_LIST=""
+          for FILE in $CHANGED_FILES; do
+            FILE_LIST="$FILE_LIST<li>$FILE</li>"
+          done
+
+          HTML_BODY="<html><body style='font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px;'>
+          <div style='background: #ffffff; border-radius: 8px; padding: 20px; box-shadow: 0px 2px 6px rgba(0,0,0,0.1);'>
+          <h2 style='color: #2d89ef;'>🚀 Code Update Notification</h2>
+          <p><strong>Author:</strong> $AUTHOR_NAME</p>
+          <p><strong>Commit Hash:</strong> <code>$COMMIT_HASH</code></p>
+          <p><strong>Files Changed:</strong></p>
+          <ul>$FILE_LIST</ul>
+          <p style='margin-top:20px;'>Keep hacking! 💻🔥</p>
+          </div></body></html>"
+
+          echo "HTML_BODY<<EOF" >> $GITHUB_ENV
+          echo "$HTML_BODY" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: Send Email
         uses: dawidd6/action-send-mail@v3
@@ -30,22 +45,8 @@ jobs:
           server_port: ${{ secrets.SMTP_PORT }}
           username: ${{ secrets.SMTP_USERNAME }}
           password: ${{ secrets.SMTP_PASSWORD }}
-          subject: "🔔 New Push by ${{ env.AUTHOR_NAME }}"
-          from: ${{ secrets.SMTP_USERNAME }} # Smanga's email
+          subject: "🔔 New Push by ${{ github.actor }}"
+          from: ${{ secrets.SMTP_USERNAME }}
           to: ${{ secrets.TEAM_EMAILS }}
           content_type: text/html
-          body: |
-            <html>
-              <body style="font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px;">
-                <div style="background: #ffffff; border-radius: 8px; padding: 20px; box-shadow: 0px 2px 6px rgba(0,0,0,0.1);">
-                  <h2 style="color: #2d89ef;">🚀 Code Update Notification</h2>
-                  <p><strong>Author:</strong> ${{ env.AUTHOR_NAME }}</p>
-                  <p><strong>Commit Hash:</strong> <code>${{ env.COMMIT_HASH }}</code></p>
-                  <p><strong>Files Changed:</strong></p>
-                  <ul>
-                  ${{ join(fromJson('["' + replace(env.CHANGED_FILES, '\n', '","') + '"]'), '<li>', '</li>') }}
-                  </ul>
-                  <p style="margin-top:20px;">Keep hacking! 💻🔥</p>
-                </div>
-              </body>
-            </html>
+          body: ${{ env.HTML_BODY }}
