@@ -1,7 +1,7 @@
 {% extends 'app/layout.html' %}
 {% load static %}
 
-{% block title %}Sign Up{% endblock %}
+{% block title %}Sign In{% endblock %}
 
 {% block head_content %}{% endblock %}
 
@@ -13,7 +13,7 @@
                 <h1>Sign Up</h1>
                 <p>Let us Know Who You Are</p>
             </div>
-            <form autocomplete="off" id="signup-form" method="post" action="{% url 'app:handle_user_reg' %}">
+            <form autocomplete="off" id="signup-form" method="post" action="{% url 'app:handle_driver_reg' %}">
                 {% csrf_token %} <!-- Django's CSRF protection -->
                 <div class="form-group">
                     <i class="fas fa-user"></i>
@@ -32,8 +32,12 @@
                     <input type="tel" id="cell_number" name="cell_number" placeholder="Cell Number" required>
                 </div>
                 <div class="form-group">
+                    <i class="fas fa-phone"></i>
+                    <input type="tel" id="license_number" name="license_number" placeholder="Licence Number" required>
+                </div>
+                <div class="form-group">
                     <i class="fas fa-wallet"></i>
-                    <input type="text" id="momo_id" name="momo_id" placeholder="Mobile Money ID (Optional)">
+                    <input type="text" id="license_plate" name="license_plate" placeholder="Licence Plate Numnber">
                 </div>
                 <div class="form-group">
                     <i class="fas fa-lock"></i>

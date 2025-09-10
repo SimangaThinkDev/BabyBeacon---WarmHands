@@ -18,7 +18,10 @@ def sign_in(request):
 def sign_up(request):
     return render( request, 'app/sign_up.html' )
 
-def handle_reg(request):
+def sign_up_driver(request):
+    return render( request, 'app/sign_up_driver.html' )
+
+def handle_user_reg(request):
 
     print( "Handle Reg is touched" )
 
@@ -67,7 +70,52 @@ def handle_reg(request):
             return HttpResponse(f"An error occurred: {e}")
 
     # If it's a GET request, render the empty form
-    return render(request, 'your_template_name.html')
+    return render(request, 'app/sign_up.html')
+
+
+def handle_driver_reg(request):
+
+    print( "Handle Reg is touched" )
+
+    if request.method == 'POST':
+        # Collect the data from the form
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        cell_number = request.POST.get('cell_number')
+        license_number = request.POST.get('license_number')
+        license_plate = request.POST.get('license_plate')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+
+        # Simple validation: Check if passwords match
+        if password != confirm_password:
+            return HttpResponse("Error: Passwords do not match!")
+        
+        byte_passw = str( password ).encode( 'utf-8' )
+        hashed_pw = bcrypt.hashpw( byte_passw, bcrypt.gensalt() )
+
+        # Create a new User object and save it to the database
+        try:
+            new_driver = Driver.objects.create(
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                cell_number = cell_number,
+                password=hashed_pw,
+                license_number=license_number,
+                license_plate=license_plate,
+            )
+            new_driver.save()
+
+            return sign_in(request)
+
+        except Exception as e:
+            # Handle potential database errors (e.g., duplicate email)
+            return HttpResponse(f"An error occurred: {e}")
+
+    # If it's a GET request, render the empty form
+    return render(request, 'app/sign_up.html')
 
 @require_GET
 def get_user_info(request, user_id):
@@ -107,8 +155,6 @@ def get_driver_info(request, driver_id):
         'last_name': driver.last_name,
         'email': driver.email,
         'license_number': driver.license_number,
-        'vehicle_make': driver.vehicle_make,
-        'vehicle_model': driver.vehicle_model,
         'license_plate': driver.license_plate,
     }
     return JsonResponse(driver_data)

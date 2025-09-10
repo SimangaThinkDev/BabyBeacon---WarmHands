@@ -29,6 +29,8 @@ class Driver(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     email = models.EmailField(unique=True, help_text="Driver's unique email address.")
+    password = models.TextField(null=True)
+    cell_number = models.CharField(max_length=20, null=True)
     license_number = models.CharField(max_length=50, unique=True, 
                                       help_text="Driver's unique license number.")
     license_plate = models.CharField(max_length=20, unique=True)
