@@ -23,12 +23,12 @@
                     <input type="password" id="password" placeholder="Password" required>
                 </div>
                 <button type="submit" class="btn">Login</button>
-                <button type="submit" class="fgt">Forgot Password?</button>
+                <a href="#" id="fp-link">Forgot Password?</a>
             </form>
             <div class="social-login">
                 <h3>New? SignUp</h3>
                 <button class="social-btn" onclick="signUpWithMomo()">
-                    <img src="unnamed.png" alt="" style="width: 20px; height: 20px;"> Sign Up With Momo
+                    <img src="{% static 'app/momo_logo.png' %}" alt="" style="width: 20px; height: 20px;"> Sign Up With Momo
                 </button>
                 <button class="social-btn" onclick="googleLogin()">
                     <i class="fab fa-google"></i> Sign Up with Google
@@ -36,7 +36,7 @@
             </div>
         </div>
         <div class="image-container">
-            <img id="logo" src="./MORE_MOVE.png" alt="MoreMove Logo">
+            <img id="logo" src="{% static 'app/MORE_MOVE.png' %}" alt="MoreMove Logo">
         </div>
     </div>
 {% endblock %}

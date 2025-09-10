@@ -120,10 +120,10 @@ USE_TZ = True
 # settings.py
 import os
 
-STATIC_URL = '/static/'
+STATIC_URL = '/app/static/'
 
 # This is where Django will collect all static files for deployment
-# STATIC_ROOT = "app/static/app/static/"
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # This is where Django will look for static files during development
 STATICFILES_DIRS = [

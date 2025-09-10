@@ -66,15 +66,6 @@ body {
     font-size: 0.9rem;
 }
 
-#fp-link {
-    text-decoration: none;
-    color: white;
-}
-
-#fp-link:hover {
-    color: #007bff;
-}
-
 .form-group {
     margin-bottom: 20px;
     position: relative;
@@ -82,7 +73,7 @@ body {
 
 .form-group input {
     width: 100%;
-    padding: 15px 35px;
+    padding: 15px 20px;
     border: 1px solid #ddd;
     border-radius: 10px;
     font-size: 1rem;
@@ -91,7 +82,7 @@ body {
 
 .form-group input:focus {
     outline: none;
-    border-color: var(--highlight-color);
+    border-color: #FFA500;
     box-shadow: 0 0 0 2px rgba(255, 165, 0, 0.1);
 }
 
