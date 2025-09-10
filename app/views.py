@@ -27,7 +27,7 @@ def handle_sign_in(request):
         password = request.POST.get('password')
         role = request.POST.get('role')
 
-        print( f"CREDS: email: {username_or_email}, Password: {password}" )
+        print( f"CREDS: email: {username_or_email}, Password: {password}, Role: {role}" )
 
         try:
 
@@ -35,10 +35,11 @@ def handle_sign_in(request):
                 # Logic for driver login
                 # Find the user by username or email
                 # We assume username is the email since that's how it's handled in sign up
+                print( User.objects.all() )
                 user = User.objects.get(email=username_or_email)
                 
                 # Convert the stored hashed password and submitted password to bytes
-                hashed_pw_from_db = user.password
+                hashed_pw_from_db = user.password.encode('utf-8')
                 password_to_check = str(password).encode('utf-8')
 
                 # Verify the password using bcrypt
@@ -56,7 +57,7 @@ def handle_sign_in(request):
         
             elif role == 'driver':
                 print( "Signing driver in" )
-                user = Driver.objects.get(email=username_or_email)
+                user = Driver.objects.get(email=str(username_or_email))
                 print( user )
                 
                 # Convert the stored hashed password and submitted password to bytes
@@ -120,7 +121,7 @@ def handle_user_reg(request):
                 email=email,
                 cell_number=cell_number,
                 momo_id=momo_id,
-                password=hashed_pw
+                password=hashed_pw.decode('utf-8')
             )
             # Note: We are not storing the password directly in this model.
             # For a real application, you should use Django's built-in 
@@ -172,7 +173,7 @@ def handle_driver_reg(request):
                 last_name=last_name,
                 email=email,
                 cell_number = cell_number,
-                password=hashed_pw,
+                password=hashed_pw.decode('utf-8'),
                 license_number=license_number,
                 license_plate=license_plate,
             )

@@ -20,23 +20,28 @@
                 alert('{{ message }}');
             </script>
             <form autocomplete="off" id="login-form" method="post" action="{% url 'app:handle_sign_in' %}">
-                 {% csrf_token %}
+                {% csrf_token %}
                 <div class="form-group">
                     <i class="fas fa-user"></i>
-                    <input type="text" id="username" placeholder="Username" required>
+                    <input type="text" name="username" id="username" placeholder="Username" required>
                 </div>
                 <div class="form-group">
                     <i class="fas fa-lock"></i>
-                    <input type="password" id="password" placeholder="Password" required>
+                    <input type="password" name="password" id="password" placeholder="Password" required>
                 </div>
                 <div class="role-selector">
-
-                    <label for="role-passenger">Passenger</label>
-                    <input type="radio" id="role-passenger" name="role" value="passenger" checked>
-
-                    <label for="role-driver">Driver</label>
-                    <input type="radio" id="role-driver" name="role" value="driver">
-
+                    <div class="role-option">
+                        <label for="role-passenger">
+                            <input type="radio" id="role-passenger" name="role" value="passenger" checked>
+                            Passenger
+                        </label>
+                    </div>
+                    <div class="role-option">
+                        <label for="role-driver">
+                            <input type="radio" id="role-driver" name="role" value="driver">
+                            Driver
+                        </label>
+                    </div>
                 </div>
                 <button type="submit" class="btn">Login</button>
                 <a href="#" id="fp-link">Forgot Password?</a>
