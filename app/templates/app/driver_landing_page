@@ -1,0 +1,112 @@
+{% extends 'app/layout.html' %}
+{% load static %}
+
+{% block title %}Driver{% endblock %}
+
+{% block head_content %}{% endblock %}
+
+{% block content %}
+<!-- Driver Landing Page -->
+    <div id="admin-page" class="container" style="display: none;">
+        <div class="nav-bar">
+            <div class="logo">SpaceExplorer Admin</div>
+            <div class="nav-links">
+                <a href="#" onclick="showAdminPage()">Dashboard</a>
+                <a href="#" onclick="showUsersPage()">Users</a>
+                <a href="#" onclick="showReportsPage()">Reports</a>
+            </div>
+            <div class="user-actions">
+                <span>Hello, <span id="admin-name">Admin</span></span>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+        
+        <div class="admin-panel">
+            <div class="admin-header">
+                <h2 class="dashboard-title">Admin Dashboard</h2>
+                <div class="admin-controls">
+                    <button onclick="addUser()">Add User</button>
+                    <button onclick="generateReport()">Generate Report</button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>System Overview</h3>
+                <div class="card-content">
+                    <div class="stat-card">
+                        <div class="stat-value">1,234</div>
+                        <div class="stat-label">Total Users</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">456</div>
+                        <div class="stat-label">Active Users</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">78</div>
+                        <div class="stat-label">Premium Members</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">R12,345</div>
+                        <div class="stat-label">Revenue</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <h3>Latest Transactions</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Name</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>RSA001</td>
+                            <td>Lindokuhle Hlatshwayo</td>
+                            <td>R9.99</td>
+                            <td>2024-10-15</td>
+                            <td><span style="color: green;">Success</span></td>
+                            <td class="action-buttons">
+                                <button class="action-btn edit-btn">Edit</button>
+                                <button class="action-btn delete-btn">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>RSA002</td>
+                            <td>Simangaliso Phakwe</td>
+                            <td>R19.99</td>
+                            <td>2025-09-14</td>
+                            <td><span style="color: red;">Failed</span></td>
+                            <td class="action-buttons">
+                                <button class="action-btn edit-btn">Edit</button>
+                                <button class="action-btn delete-btn">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>RSA003</td>
+                            <td>Phehello Ntoahae</td>
+                            <td>R29.99</td>
+                            <td>2023-10-13</td>
+                            <td><span style="color: green;">Success</span></td>
+                            <td class="action-buttons">
+                                <button class="action-btn edit-btn">Edit</button>
+                                <button class="action-btn delete-btn">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}
+
+{% block scripts %}
+<!-- Add scripts here later -->
+{% endblock %}

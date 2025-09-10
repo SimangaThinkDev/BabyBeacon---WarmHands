@@ -1,0 +1,71 @@
+{% extends 'app/layout.html' %}
+{% load static %}
+
+{% block title %}User{% endblock %}
+
+{% block head_content %}{% endblock %}
+
+{% block content %}
+<!-- User Landing Page -->
+    <div id="user-page" class="container" style="display: none;">
+        <div class="nav-bar">
+            <div class="logo">SpaceExplorer</div>
+            <div class="nav-links">
+                <a href="#" onclick="showUserPage()">Dashboard</a>
+                <a href="#" onclick="showPaymentPage()">Payments</a>
+                <a href="#" onclick="showProfilePage()">Profile</a>
+            </div>
+            <div class="user-actions">
+                <span>Hello, <span id="user-name">John</span></span>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+        
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <h2 class="dashboard-title">Welcome Back!</h2>
+                <div class="user-info">
+                    <div class="profile-pic">J</div>
+                    <span id="welcome-message">Hello, John</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>Account Overview</h3>
+                <div class="card-content">
+                    <div class="stat-card">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Active Missions</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">Completed Tasks</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Pending Requests</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">24</div>
+                        <div class="stat-label">Total Points</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>Recent Activity</h3>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li style="padding: 10px 0; border-bottom: 1px solid #eee;">Completed mission: Mars Exploration</li>
+                    <li style="padding: 10px 0; border-bottom: 1px solid #eee;">New achievement unlocked: Space Pioneer</li>
+                    <li style="padding: 10px 0; border-bottom: 1px solid #eee;">Received 5 points for daily login</li>
+                    <li style="padding: 10px 0;">Started new mission: Jupiter Expedition</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}
+
+{% block scripts %}
+<!-- Add scripts here later -->
+{% endblock %}
