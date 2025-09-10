@@ -13,17 +13,38 @@
                 <h1>Sign Up</h1>
                 <p>Let us Know Who You Are</p>
             </div>
-            <form id="login-form">
+            <form autocomplete="off" id="signup-form" method="post" action="{% url 'app:handle_reg' %}">
+                {% csrf_token %} <!-- Django's CSRF protection -->
                 <div class="form-group">
                     <i class="fas fa-user"></i>
-                    <input type="text" id="username" placeholder="Username" required>
+                    <input type="text" id="first_name" name="first_name" placeholder="First Name" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="last_name" name="last_name" placeholder="Last Name" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="email" name="email" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-phone"></i>
+                    <input type="tel" id="cell_number" name="cell_number" placeholder="Cell Number" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-wallet"></i>
+                    <input type="text" id="momo_id" name="momo_id" placeholder="Mobile Money ID (Optional)">
                 </div>
                 <div class="form-group">
                     <i class="fas fa-lock"></i>
-                    <input type="password" id="password" placeholder="Password" required>
+                    <input type="password" id="password" name="password" placeholder="Password" required>
                 </div>
-                <button type="submit" class="btn">Login</button>
-                <a href="#" id="fp-link">Forgot Password?</a>
+                <div class="form-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required>
+                </div>
+                <button type="submit" class="btn">Sign Up</button>
+                <a href="/" id="login-link">Already have an account? Login</a>
             </form>
             <div class="social-login">
                 <h3>New? SignUp</h3>

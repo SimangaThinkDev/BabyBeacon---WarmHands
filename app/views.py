@@ -1,12 +1,14 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_GET, require_POST
 from django.views.decorators.csrf import csrf_exempt
 import json
+import bcrypt
 
 from .models import User, Driver, Ride
 
 # A basic view for the app's home page
+
 def sign_in(request):
     """
     A simple home page view.
@@ -15,6 +17,57 @@ def sign_in(request):
 
 def sign_up(request):
     return render( request, 'app/sign_up.html' )
+
+def handle_reg(request):
+
+    print( "Handle Reg is touched" )
+
+    if request.method == 'POST':
+        # Collect the data from the form
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        email = request.POST.get('email')
+        cell_number = request.POST.get('cell_number')
+        momo_id = request.POST.get('momo_id')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+
+        # Simple validation: Check if passwords match
+        if password != confirm_password:
+            # You should provide more robust error handling,
+            # perhaps by re-rendering the form with an error message.
+            return HttpResponse("Error: Passwords do not match!")
+        
+        byte_passw = str( password ).encode( 'utf-8' )
+        hashed_pw = bcrypt.hashpw( byte_passw, bcrypt.gensalt() )
+
+        # Create a new User object and save it to the database
+        try:
+            new_user = User.objects.create(
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                cell_number=cell_number,
+                momo_id=momo_id,
+                password=hashed_pw
+            )
+            # Note: We are not storing the password directly in this model.
+            # For a real application, you should use Django's built-in 
+            # authentication system which handles password hashing securely.
+            # Example: from django.contrib.auth.models import User as AuthUser
+            # AuthUser.objects.create_user(username=email, password=password, ...)
+
+            new_user.save()
+
+            # After successful creation, redirect the user
+            return sign_in(request) # Redirect to a page confirming success
+
+        except Exception as e:
+            # Handle potential database errors (e.g., duplicate email)
+            return HttpResponse(f"An error occurred: {e}")
+
+    # If it's a GET request, render the empty form
+    return render(request, 'your_template_name.html')
 
 @require_GET
 def get_user_info(request, user_id):
