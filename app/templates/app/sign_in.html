@@ -3,8 +3,11 @@
 
 {% block title %}Sign In{% endblock %}
 
-{% block head_content %}{% endblock %}
+{% block head_content %}
+<script>
 
+</script>
+{% endblock %}
 {% block content %}
 <!-- Login Page -->
     <div id="login-page" class="container">
@@ -26,8 +29,8 @@
                 <a href="#" id="fp-link">Forgot Password?</a>
             </form>
             <div class="social-login">
-                <h3>New? SignUp</h3>
-                <button class="social-btn" onclick="signUpWithMomo()">
+                <a href="/sign_up">New? SignUp</a>
+                <button class="social-btn" onclick="window.location.href='/sign_up'">
                     <img src="{% static 'app/momo_logo.png' %}" alt="" style="width: 20px; height: 20px;"> Sign Up With Momo
                 </button>
                 <button class="social-btn" onclick="googleLogin()">

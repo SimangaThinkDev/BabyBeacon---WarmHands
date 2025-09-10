@@ -7,12 +7,14 @@ import json
 from .models import User, Driver, Ride
 
 # A basic view for the app's home page
-def home(request):
+def sign_in(request):
     """
     A simple home page view.
     """
-    # return JsonResponse({'message': 'Welcome to the Transport Payment System API!'})
     return render( request, 'app/sign_in.html' )
+
+def sign_up(request):
+    return render( request, 'app/sign_up.html' )
 
 @require_GET
 def get_user_info(request, user_id):
