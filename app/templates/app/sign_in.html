@@ -1,0 +1,46 @@
+{% extends 'app/layout.html' %}
+{% load static %}
+
+{% block title %}Sign In{% endblock %}
+
+{% block head_content %}{% endblock %}
+
+{% block content %}
+<!-- Login Page -->
+    <div id="login-page" class="container">
+        <div class="login-container">
+            <div class="login-header">
+                <h1>Welcome</h1>
+                <p>We are glad to see you back with us</p>
+            </div>
+            <form id="login-form">
+                <div class="form-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="username" placeholder="Username" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn">Login</button>
+                <button type="submit" class="fgt">Forgot Password?</button>
+            </form>
+            <div class="social-login">
+                <h3>New? SignUp</h3>
+                <button class="social-btn" onclick="signUpWithMomo()">
+                    <img src="unnamed.png" alt="" style="width: 20px; height: 20px;"> Sign Up With Momo
+                </button>
+                <button class="social-btn" onclick="googleLogin()">
+                    <i class="fab fa-google"></i> Sign Up with Google
+                </button>
+            </div>
+        </div>
+        <div class="image-container">
+            <img id="logo" src="./MORE_MOVE.png" alt="MoreMove Logo">
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<!-- Add scripts here later -->
+{% endblock %}

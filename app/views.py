@@ -1,5 +1,5 @@
-from django.shortcuts import get_object_or_404
-from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, render
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_GET, require_POST
 from django.views.decorators.csrf import csrf_exempt
 import json
@@ -11,7 +11,8 @@ def home(request):
     """
     A simple home page view.
     """
-    return JsonResponse({'message': 'Welcome to the Transport Payment System API!'})
+    # return JsonResponse({'message': 'Welcome to the Transport Payment System API!'})
+    return render( request, 'app/sign_in.html' )
 
 @require_GET
 def get_user_info(request, user_id):
