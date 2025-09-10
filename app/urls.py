@@ -3,9 +3,11 @@ from . import views
 
 app_name = "app"
 urlpatterns = [
+    path('home/', views.home, name="home"),
     path('sign_in/', views.sign_in, name='sign_in'),
     path('sign_up/', views.sign_up, name='sign_up'),
     path('sign_up_driver/', views.sign_up_driver, name='sign_up_driver'),
+    path( 'handle_sign_in/', views.handle_sign_in, name="handle_sign_in" ),
     path('user/', views.handle_user_reg, name="handle_user_reg"),
     path('driver/', views.handle_driver_reg, name="handle_driver_reg"),
     path('users/<int:user_id>/', views.get_user_info, name='get_user_info'),

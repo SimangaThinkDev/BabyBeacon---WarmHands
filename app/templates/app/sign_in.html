@@ -16,7 +16,11 @@
                 <h1>Welcome</h1>
                 <p>We are glad to see you back with us</p>
             </div>
-            <form id="login-form">
+            <script>
+                alert('{{ message }}');
+            </script>
+            <form autocomplete="off" id="login-form" method="post" action="{% url 'app:handle_sign_in' %}">
+                 {% csrf_token %}
                 <div class="form-group">
                     <i class="fas fa-user"></i>
                     <input type="text" id="username" placeholder="Username" required>
@@ -24,6 +28,15 @@
                 <div class="form-group">
                     <i class="fas fa-lock"></i>
                     <input type="password" id="password" placeholder="Password" required>
+                </div>
+                <div class="role-selector">
+
+                    <label for="role-passenger">Passenger</label>
+                    <input type="radio" id="role-passenger" name="role" value="passenger" checked>
+
+                    <label for="role-driver">Driver</label>
+                    <input type="radio" id="role-driver" name="role" value="driver">
+
                 </div>
                 <button type="submit" class="btn">Login</button>
                 <a href="#" id="fp-link">Forgot Password?</a>

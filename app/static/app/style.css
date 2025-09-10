@@ -227,7 +227,7 @@ body {
     color: #FFA500;
 }
 
-.user-actions {
+.form-actions {
     display: flex;
     gap: 15px;
 }
@@ -603,4 +603,11 @@ tr:hover {
     .payment-methods {
         grid-template-columns: 1fr;
     }
+}
+
+.role-selector {
+    display: flex; /* Makes the container a flexbox */
+    align-items: center; /* Vertically aligns the items */
+    gap: 20px; /* Adds space between the radio button options */
+    padding-right: 3rem;
 }

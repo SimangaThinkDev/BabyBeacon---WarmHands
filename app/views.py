@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_GET, require_POST
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib import messages
 import json
 import bcrypt
 
@@ -9,11 +10,78 @@ from .models import User, Driver, Ride
 
 # A basic view for the app's home page
 
+def home(request):
+    return HttpResponse(f"Welcome Home")
+
 def sign_in(request):
-    """
-    A simple home page view.
-    """
-    return render( request, 'app/sign_in.html' )
+    print("Sign-in view is touched")
+
+    # For GET requests, just render the login form
+    return render(request, 'app/sign_in.html')
+
+def handle_sign_in(request):
+    print( "---------------------- HANDLING SIGN IN -----------------------------" )
+    if request.method == 'POST':
+        # Get data from the form
+        username_or_email = request.POST.get('username')
+        password = request.POST.get('password')
+        role = request.POST.get('role')
+
+        print( f"CREDS: email: {username_or_email}, Password: {password}" )
+
+        try:
+
+            if role == 'passenger':
+                # Logic for driver login
+                # Find the user by username or email
+                # We assume username is the email since that's how it's handled in sign up
+                user = User.objects.get(email=username_or_email)
+                
+                # Convert the stored hashed password and submitted password to bytes
+                hashed_pw_from_db = user.password
+                password_to_check = str(password).encode('utf-8')
+
+                # Verify the password using bcrypt
+                if bcrypt.checkpw(password_to_check, hashed_pw_from_db):
+                    # Passwords match!
+                    # You would typically set up a session here to log the user in
+                    # For example: from django.contrib.auth import login
+                    # login(request, user)
+                    print( "password match" )
+                    
+                    return HttpResponse("Login successful!")
+                else:
+                    # Password does not match
+                    return HttpResponse("Invalid credentials")
+        
+            elif role == 'driver':
+                print( "Signing driver in" )
+                user = Driver.objects.get(email=username_or_email)
+                print( user )
+                
+                # Convert the stored hashed password and submitted password to bytes
+                hashed_pw_from_db = user.password.encode('utf-8')
+                password_to_check = str(password).encode('utf-8')
+
+                # Verify the password using bcrypt
+                if bcrypt.checkpw(password_to_check, hashed_pw_from_db):
+                    # Passwords match!
+                    # You would typically set up a session here to log the user in
+                    # For example: from django.contrib.auth import login
+                    # login(request, user)
+                    print( "password match" )
+                    
+                    return HttpResponse("Login successful!")
+                else:
+                    # Password does not match
+                    return HttpResponse("Invalid credentials")
+
+        except User.DoesNotExist:
+            # User with that email/username doesn't exist
+            return HttpResponse("Invalid credentials")
+        
+    return render( request, "app/sign_in.html", {'message': "Invalid Credentials"} )
+
 
 def sign_up(request):
     return render( request, 'app/sign_up.html' )
@@ -63,7 +131,9 @@ def handle_user_reg(request):
             new_user.save()
 
             # After successful creation, redirect the user
-            return sign_in(request) # Redirect to a page confirming success
+            messages.success(request, 'Your action was successful!')
+            message = "Successful Login"
+            return render( request, 'app/sign_in.html', {'message': message} )
 
         except Exception as e:
             # Handle potential database errors (e.g., duplicate email)
@@ -108,11 +178,13 @@ def handle_driver_reg(request):
             )
             new_driver.save()
 
-            return sign_in(request)
+            messages.success(request, 'Your action was successful!')
+            message = "Successful Login"
+            return render( request, 'app/sign_in.html', {'message': message} )
 
         except Exception as e:
             # Handle potential database errors (e.g., duplicate email)
-            return HttpResponse(f"An error occurred: {e}")
+            return HttpResponse(f"User Already Exists, Sign-Up Maybe")
 
     # If it's a GET request, render the empty form
     return render(request, 'app/sign_up.html')
