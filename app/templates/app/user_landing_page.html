@@ -1,33 +1,179 @@
 {% extends 'app/layout.html' %}
 {% load static %}
 
-{% block title %}User{% endblock %}
+{% block title %}User Dashboard{% endblock %}
 
-{% block head_content %}{% endblock %}
+{% block head_content %}
+<style>
+/* ROOT VARIABLES for the color theme */
+:root {
+    --main-color: #004F71;
+    --background-color: #012738;
+    --second-bg-color: #193a49;
+    --text-color: white;
+    --highlight-color: #ffec3d;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: var(--main-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--highlight-color);
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-color);
+    margin-left: 25px;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--highlight-color);
+}
+
+.user-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logout-btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--highlight-color);
+    color: var(--background-color);
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.logout-btn:hover {
+    background-color: #e5d736; /* A slightly darker yellow for hover effect */
+}
+
+.dashboard-container {
+    padding: 20px;
+    max-width: 900px;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.dashboard-title {
+    font-size: 28px;
+    color: var(--text-color);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-color);
+}
+
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--highlight-color);
+    color: var(--background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+.card {
+    background-color: var(--second-bg-color);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card h3 {
+    margin-top: 0;
+    color: var(--text-color);
+}
+
+.card-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.stat-card {
+    flex: 1;
+    min-width: 150px;
+    text-align: center;
+    background-color: var(--background-color);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid var(--main-color);
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--highlight-color);
+}
+
+.stat-label {
+    font-size: 14px;
+    color: var(--text-color);
+}
+</style>
+{% endblock %}
 
 {% block content %}
 <!-- User Landing Page -->
-    <div id="user-page" class="container">
-        <header>
+<header>
 
-            <div class="logo">MoreMove</div>
-            <div class="nav-links">
-                <a href="#" onclick="showUserPage()">Dashboard</a>
-                <a href="#" onclick="showPaymentPage()">Payments</a>
-                <a href="#" onclick="showProfilePage()">Profile</a>
-            </div>
-            <div class="user-actions">
-                <span>Hello, <span id="user-name">{{ username }}</span></span>
-                <button class="logout-btn" onclick="logout()">Logout</button>
-            </div>
-        </header>
+    <div class="logo"><img src="{% static 'app/arrow.png' %}" style="width: 70px; height: 70px;"></div>
+    <div class="nav-links">
+        <a href="#" onclick="showUserPage()">Dashboard</a>
+        <a href="#" onclick="showPaymentPage()">Payments</a>
+        <a href="#" onclick="showProfilePage()">Profile</a>
+    </div>
+    <div class="user-actions">
+        <span><span id="user-name">{{ username }}</span></span>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+</header>
+    <div id="user-page" class="container">
         
         <div class="dashboard-container">
             <div class="dashboard-header">
                 <h2 class="dashboard-title">Welcome Back!</h2>
                 <div class="user-info">
-                    <div class="profile-pic">{{ username[0] }}</div>
-                    <span id="welcome-message">Hello, {{ username }}</span>
+                    <div class="profile-pic">{{ T }}</div>
+                    <span id="welcome-message">Y'ello, {{ username }}</span>
                 </div>
             </div>
             
@@ -40,10 +186,10 @@
                     </div>
                     <div class="stat-card">
                         <div class="stat-value">8</div>
-                        <div class="stat-label">Completed Tasks</div>
+                        <div class="stat-label">Completed Trips</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">5</div>
+                        <div class="stat-value">0</div>
                         <div class="stat-label">Pending Requests</div>
                     </div>
                     <div class="stat-card">
@@ -52,16 +198,7 @@
                     </div>
                 </div>
             </div>
-            
-            <!-- <div class="card">
-                <h3>Recent Activity</h3>
-                <ul style="padding: 0;">
-                    <li style="padding: 10px 0; border-bottom: 1px solid #eee;">Completed mission: Mars Exploration</li>
-                    <li style="padding: 10px 0; border-bottom: 1px solid #eee;">New achievement unlocked: Space Pioneer</li>
-                    <li style="padding: 10px 0; border-bottom: 1px solid #eee;">Received 5 points for daily login</li>
-                    <li style="padding: 10px 0;">Started new mission: Jupiter Expedition</li>
-                </ul>
-            </div> -->
+        
         </div>
     </div>
     

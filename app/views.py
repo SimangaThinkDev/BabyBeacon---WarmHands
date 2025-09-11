@@ -32,7 +32,7 @@ def handle_sign_in(request):
         password = request.POST.get('password')
         role = request.POST.get('role')
 
-        print( f"CREDS: email: {username_or_email}, Password: {password}, Role: {role}" )
+        print( f"CREDS: email: {username_or_email}, Role: {role}" )
 
         try:
 
@@ -55,7 +55,7 @@ def handle_sign_in(request):
                     # login(request, user)
                     print( "password match" )
 
-                    return HttpResponse("Login successful!")
+                    return render( request, "app/user_landing_page.html", { "username" : user.first_name } )
                 else:
                     # Password does not match
                     return render(request, "app/sign_in.html", {'message': "Invalid credentials"})
@@ -77,10 +77,10 @@ def handle_sign_in(request):
                     # login(request, user)
                     print( "password match" )
                     
-                    return HttpResponse("Login successful!")
+                    return render( request, "app/user_landing_page.html", { "username" : user.first_name } )
                 else:
                     # Password does not match
-                    return HttpResponse("Invalid credentials")
+                    return render(request, "app/sign_up_driver.html", {'message': "Invalid credentials"})
 
         except User.DoesNotExist:
             # User with that email/username doesn't exist
