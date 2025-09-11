@@ -316,7 +316,7 @@ import requests, json, uuid
 from django.conf import settings
 
 
-token_url = settings.TOKENURL
+token_url = settings.TOKEN_URL
 pay_url = settings.PAY_URL
 
 def create_access_token(request):
@@ -356,7 +356,7 @@ def request_to_pay(request):
 
     # Prepare the data as a Python dictionary
     headers = {
-        "Authorization" : create_access_token(),
+        "Authorization" : create_access_token(request),
         "X-Reference-Id" : str(our_uuid),
         "X-Target-Environment" : settings.TARGET_ENV,
         "Ocp-Apim-Subscription-Key" : settings.SUB_KEY,
