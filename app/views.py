@@ -301,3 +301,12 @@ def create_ride(request):
         return JsonResponse({'error': 'Invalid JSON in request body.'}, status=400)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
+
+def landing_page(request):
+    return render(request, 'app/landing_page.html')
+
+def dashboard(request):
+    return HttpResponse("Welcome to your Dashboard!")
+
+def handle_driver_dashboard(request):
+    return render(request, "app/driver_landing_page.html")

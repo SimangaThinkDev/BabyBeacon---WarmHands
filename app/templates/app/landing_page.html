@@ -1,0 +1,118 @@
+{% extends 'app/layout.html' %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block head_content %}
+
+<script>
+
+</script>
+{% endblock %}
+{% block content %}
+  
+  <!-- Navigation -->
+  <nav class="nav-bar">
+    <div class="logo">MoreMove</div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#benefits">Benefits</a>
+      <a href="#download">Download</a>
+    </div>
+    <div class="user-actions">
+      <button><a href="/sign_in">Login</a></button>
+      <button><a href="/sign_up">Sign Up</a></button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="login-container">
+    <div class="login-header">
+      <h1>Hello Common Traveller 👋</h1>
+      <p>The smarter way to ride Africa’s taxis, buses, and trains – cashless, safe, and connected with MoMo.</p>
+    </div>
+    <div class="form-actions" style="justify-content:center; margin-top:20px;">
+      <a href="#download" class="btn">Get Started</a>
+    </div>
+  </header>
+
+  <!-- Features Section -->
+  <section id="features" class="section container">
+    <div class="card">
+      <h3>🚖 Unified Booking</h3>
+      <p>One app for taxis, buses, and trains. Travel seamlessly across the city or across Africa.</p>
+    </div>
+    <div class="card">
+      <h3>💳 Cashless Payments</h3>
+      <p>Powered by MTN MoMo & mobile money. No more cash risks or lost tickets.</p>
+    </div>
+    <div class="card">
+      <h3>🎫 Smart Ticketing</h3>
+      <p>QR codes and e-tickets replace old bus tags and paper slips.</p>
+    </div>
+    <div class="card">
+      <h3>🌍 Inclusive Travel</h3>
+      <p>Designed for locals and tourists – multi-language, secure, and accessible.</p>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section id="how-it-works" class="payment-container">
+    <div class="payment-form">
+      <h2>How MoreMove Works</h2>
+      <ol style="margin:20px 0; color:#333;">
+        <li><strong>Search & Select:</strong> Choose your ride (bus, train, or taxi).</li>
+        <li><strong>Book & Pay:</strong> Pay instantly with MoMo or mobile money.</li>
+        <li><strong>Get Your Ticket:</strong> Digital QR ticket delivered to your phone.</li>
+        <li><strong>Ride & Relax:</strong> Board with ease, safe and cash-free.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Benefits Section -->
+  <section id="benefits" class="dashboard-container">
+    <div class="card">
+      <h3>Why Choose MoreMove?</h3>
+      <div class="card-content">
+        <div class="stat-card">
+          <div class="stat-value">✅</div>
+          <div class="stat-label">No Cash Hassles</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">🔐</div>
+          <div class="stat-label">Safer Transactions</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">🌍</div>
+          <div class="stat-label">Tourist Friendly</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">📊</div>
+          <div class="stat-label">Transparent & Trackable</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section id="download" class="payment-container">
+    <div class="payment-form" style="text-align:center;">
+      <h2>Ready to Move Smarter?</h2>
+      <p>Be part of Africa’s transport revolution – safer, faster, and cashless with MoreMove.</p>
+      <button class="payment-button">Download App</button>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="background:#1a1a1a; color:white; text-align:center; padding:20px;">
+    © 2025 MoreMove – Smart Mobility for Africa
+  </footer>
+
+</body>
+</html>
+{% endblock %}
+
+{% block scripts %}
+<!-- Add scripts here later -->
+{% endblock %}

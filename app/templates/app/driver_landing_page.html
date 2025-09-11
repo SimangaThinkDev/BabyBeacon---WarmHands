@@ -1,0 +1,150 @@
+{% extends 'app/layout.html' %}
+{% load static %}
+
+{% block title %}Driver{% endblock %}
+
+{% block head_content %}{% endblock %}
+
+{% block content %}
+<!-- Driver Landing Page -->
+<div id="driver-page" class="container">
+    <!-- Navigation -->
+    <div class="nav-bar">
+        <div class="logo">MoreMove Driver</div>
+        <div class="nav-links">
+            <a href="#">Dashboard</a>
+            <a href="#">Trips</a>
+            <a href="#">Payments</a>
+        </div>
+        <div class="user-actions">
+            <span>Hello, <span id="driver-name">Driver</span></span>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <!-- Driver Dashboard -->
+    <div class="dashboard-container">
+        <!-- Header -->
+        <div class="dashboard-header">
+            <h2 class="dashboard-title">Driver Dashboard</h2>
+            <div class="admin-controls">
+                <button onclick="startShift()">Start Shift</button>
+                <button onclick="endShift()">End Shift</button>
+            </div>
+        </div>
+
+        <!-- Overview Cards -->
+        <div class="card">
+            <h3>Today’s Overview</h3>
+            <div class="card-content">
+                <div class="stat-card">
+                    <div class="stat-value">12</div>
+                    <div class="stat-label">Trips Completed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">R850</div>
+                    <div class="stat-label">Total Earnings</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">4.9 ★</div>
+                    <div class="stat-label">Driver Rating</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">3</div>
+                    <div class="stat-label">Upcoming Rides</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upcoming Trips -->
+        <div class="card">
+            <h3>Upcoming Trips</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Trip ID</th>
+                        <th>Passenger</th>
+                        <th>Pickup</th>
+                        <th>Destination</th>
+                        <th>Fare</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>TRP001</td>
+                        <td>Thando Mokoena</td>
+                        <td>Sandton City</td>
+                        <td>OR Tambo Airport</td>
+                        <td>R250</td>
+                        <td><span style="color: orange;">Scheduled</span></td>
+                    </tr>
+                    <tr>
+                        <td>TRP002</td>
+                        <td>Lebo Malatjie</td>
+                        <td>Rosebank Mall</td>
+                        <td>Midrand</td>
+                        <td>R180</td>
+                        <td><span style="color: orange;">Scheduled</span></td>
+                    </tr>
+                    <tr>
+                        <td>TRP003</td>
+                        <td>Nia Okafor</td>
+                        <td>Fourways</td>
+                        <td>Sandton</td>
+                        <td>R120</td>
+                        <td><span style="color: orange;">Scheduled</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Earnings History -->
+        <div class="card">
+            <h3>Earnings History</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Trips</th>
+                        <th>Total Earnings</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2025-09-08</td>
+                        <td>15</td>
+                        <td>R1,050</td>
+                    </tr>
+                    <tr>
+                        <td>2025-09-09</td>
+                        <td>10</td>
+                        <td>R720</td>
+                    </tr>
+                    <tr>
+                        <td>2025-09-10</td>
+                        <td>12</td>
+                        <td>R850</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function startShift() {
+        alert("Shift started! You are now available for trips.");
+    }
+
+    function endShift() {
+        alert("Shift ended. You are now offline.");
+    }
+
+    function logout() {
+        alert("Logging out...");
+    }
+</script>
+{% endblock %}

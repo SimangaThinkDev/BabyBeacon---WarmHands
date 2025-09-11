@@ -105,7 +105,7 @@ body {
 
 .btn {
     display: block;
-    width: 100%;
+    width:fit-content;
     padding: 15px;
     background-color: #1a1a1a;
     color: white;
@@ -610,4 +610,166 @@ tr:hover {
     align-items: center; /* Vertically aligns the items */
     gap: 20px; /* Adds space between the radio button options */
     padding-right: 3rem;
+}
+
+/* --------------------
+   Landing Page Styles
+-----------------------*/
+
+/* Hero Section */
+.landing-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 20px;
+    background: linear-gradient(135deg, var(--main-color), var(--second-bg-color));
+    color: var(--text-color);
+    border-radius: 20px;
+    margin: 20px;
+}
+
+.landing-hero h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--highlight-color);
+}
+
+.landing-hero p {
+    max-width: 700px;
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    line-height: 1.8;
+}
+
+/* Features Section */
+.landing-features {
+    padding: 60px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.landing-features h2 {
+    text-align: center;
+    font-size: 2rem;
+    color: var(--highlight-color);
+    margin-bottom: 40px;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.feature-card {
+    background: var(--second-bg-color);
+    padding: 25px;
+    border-radius: 15px;
+    color: var(--text-color);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-card h3 {
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+    color: var(--highlight-color);
+}
+
+/* How It Works */
+.landing-how {
+    background-color: var(--second-bg-color);
+    padding: 60px 20px;
+    border-radius: 20px;
+    margin: 40px 20px;
+    color: var(--text-color);
+}
+
+.landing-how h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--highlight-color);
+}
+
+.landing-how ol {
+    max-width: 700px;
+    margin: 0 auto;
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+.landing-how li {
+    margin-bottom: 15px;
+}
+
+/* Benefits / Stats Section */
+.landing-benefits {
+    padding: 60px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.landing-benefits h2 {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    color: var(--highlight-color);
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.benefit {
+    background: var(--second-bg-color);
+    padding: 20px;
+    border-radius: 10px;
+    color: var(--text-color);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+}
+
+/* CTA Section */
+.landing-cta {
+    text-align: center;
+    padding: 60px 20px;
+    background: var(--main-color);
+    color: var(--text-color);
+    border-radius: 20px;
+    margin: 40px 20px;
+}
+
+.landing-cta h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: var(--highlight-color);
+}
+
+.landing-cta p {
+    margin-bottom: 30px;
+    font-size: 1.1rem;
+}
+
+.landing-cta .btn {
+    background: var(--highlight-color);
+    color: var(--background-color);
+    font-weight: 700;
+    padding: 15px 30px;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.landing-cta .btn:hover {
+    background: #ffd500;
+    transform: translateY(-3px);
 }
