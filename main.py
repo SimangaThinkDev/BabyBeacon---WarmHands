@@ -3,10 +3,15 @@ from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_GET, require_POST
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
+from django.conf import settings
 import json
 import bcrypt
+import requests, uuid
 
 from .models import User, Driver, Ride
+
+token_url = settings.TOKENURL
+pay_url = settings.PAY_URL
 
 # A basic view for the app's home page
 
@@ -302,22 +307,9 @@ def create_ride(request):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
 
-def landing_page(request):
-    return render(request, 'app/landing_page.html')
-
-def dashboard(request):
-    return HttpResponse("Welcome to your Dashboard!")
-
-def handle_driver_dashboard(request):
-    return render(request, "app/driver_landing_page.html")
-
-
-import requests, json, uuid
-from django.conf import settings
-
-
-token_url = settings.TOKENURL
-pay_url = settings.PAY_URL
+# ----------------------------------------------------------------------------------------------- #
+# -----------------------------      MOMO SECTION       ----------------------------------------- #
+# ----------------------------------------------------------------------------------------------- #
 
 def create_access_token(request):
     headers = {
@@ -389,3 +381,4 @@ def request_to_pay(request):
 
     except requests.exceptions.RequestException as e:
         print(f"An error occurred during the request: {e}")
+

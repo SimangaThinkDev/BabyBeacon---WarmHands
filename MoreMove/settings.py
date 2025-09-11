@@ -153,3 +153,25 @@ MESSAGE_TAGS = {
     messages.WARNING: 'alert-warning',
     messages.ERROR: 'alert-danger',
 }
+
+
+import os
+from pathlib import Path
+from dotenv import load_dotenv
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load environment variables from .env file
+load_dotenv(os.path.join(BASE_DIR, '.env'))
+
+# Now you can access your variables
+TOKEN_URL = os.environ.get('TOKEN_URL')
+PAY_URL = os.environ.get('PAY_URL')
+PARTY_ID = os.environ.get('PARTY_ID')
+PARTY_ID_TYPE = os.environ.get('PARTY_ID_TYPE')
+SUB_KEY = os.environ.get('SUB_KEY')
+CA_AUTH = os.environ.get('CA_AUTH')
+TARGET_ENV = os.environ.get('TARGET_ENV')
+
+# The rest of your settings.py file...
