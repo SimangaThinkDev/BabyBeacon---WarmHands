@@ -5,6 +5,11 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 import json
 import bcrypt
+import requests
+import base64
+import uuid
+from datetime import datetime
+import os
 
 from .models import User, Driver, Ride
 
@@ -49,11 +54,11 @@ def handle_sign_in(request):
                     # For example: from django.contrib.auth import login
                     # login(request, user)
                     print( "password match" )
-                    
+
                     return HttpResponse("Login successful!")
                 else:
                     # Password does not match
-                    return HttpResponse("Invalid credentials")
+                    return render(request, "app/sign_in.html", {'message': "Invalid credentials"})
         
             elif role == 'driver':
                 print( "Signing driver in" )
@@ -302,90 +307,107 @@ def create_ride(request):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
 
+import requests
+import uuid
+from django.conf import settings
+from django.shortcuts import render
+from django.http import JsonResponse
+import json
+
+# ======== MTN MOMO CONFIGURATION ========
+# You should move these to settings.py or environment variables
+MOMO_PRIMARY_KEY = getattr(settings, 'MOMO_PRIMARY_KEY', 'your-primary-key')
+MOMO_USER_ID = getattr(settings, 'MOMO_USER_ID', 'your-user-id')
+MOMO_BASE_URL = "https://sandbox.momodeveloper.mtn.com"  # Use production URL when live
+
+def get_momo_access_token():
+    """Request OAuth2 token from MoMo API"""
+    url = f"{MOMO_BASE_URL}/collection/token/"
+    headers = {
+        'Ocp-Apim-Subscription-Key': MOMO_PRIMARY_KEY,
+        'Authorization': f'Basic {base64.b64encode(f"{MOMO_USER_ID}:{MOMO_PRIMARY_KEY}".encode()).decode()}'
+    }
+    response = requests.post(url, headers=headers)
+    if response.status_code == 200:
+        return response.json().get('access_token')
+    else:
+        print("MoMo Token Error:", response.text)
+        return None
+
+def request_to_pay(request):
+    """Initiate MoMo Payment Request"""
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+    data = json.loads(request.body)
+    amount = data.get('amount')
+    phone_number = data.get('phone_number')
+    external_id = str(uuid.uuid4())  # Unique transaction ID
+
+    access_token = get_momo_access_token()
+    if not access_token:
+        return JsonResponse({'error': 'Failed to authenticate with MoMo'}, status=500)
+
+    url = f"{MOMO_BASE_URL}/collection/v1_0/requesttopay"
+    headers = {
+        'Authorization': f'Bearer {access_token}',
+        'X-Reference-Id': external_id,
+        'X-Target-Environment': 'sandbox',  # Change to 'mtnuganda' for production
+        'Ocp-Apim-Subscription-Key': MOMO_PRIMARY_KEY,
+        'Content-Type': 'application/json'
+    }
+    payload = {
+        "amount": amount,
+        "currency": "UGX",  # Change if needed (GHS, XOF, etc.)
+        "externalId": external_id,
+        "payer": {
+            "partyIdType": "MSISDN",
+            "partyId": phone_number
+        },
+        "payerMessage": "Payment for Ride",
+        "payeeNote": "MoreMove Ride Payment"
+    }
+
+    response = requests.post(url, json=payload, headers=headers)
+
+    if response.status_code == 202:
+        # Payment request accepted — poll for status or wait for callback
+        return JsonResponse({
+            'status': 'pending',
+            'reference_id': external_id,
+            'message': 'Payment request sent. User will receive prompt on phone.'
+        })
+    else:
+        return JsonResponse({
+            'error': 'Payment initiation failed',
+            'details': response.json()
+        }, status=400)
+
+def handle_driver_dashboard(request):
+    return render(request, 'app/driver_dashboard.html')
+
 def landing_page(request):
     return render(request, 'app/landing_page.html')
 
 def dashboard(request):
-    return HttpResponse("Welcome to your Dashboard!")
+    return render(request, 'app/dashboard.html')
 
-def handle_driver_dashboard(request):
-    return render(request, "app/driver_landing_page.html")
+def check_payment_status(request, reference_id):
+    """Check payment status using reference ID"""
+    access_token = get_momo_access_token()
+    if not access_token:
+        return JsonResponse({'error': 'Auth failed'}, status=500)
 
-
-import requests, json, uuid
-from django.conf import settings
-
-
-token_url = settings.TOKEN_URL
-pay_url = settings.PAY_URL
-
-def create_access_token(request):
+    url = f"{MOMO_BASE_URL}/collection/v1_0/requesttopay/{reference_id}"
     headers = {
-        "Authorization" : settings.CA_AUTH,
-        "Ocp-Apim-Subscription-Key" : settings.SUB_KEY
+        'Authorization': f'Bearer {access_token}',
+        'X-Target-Environment': 'sandbox',
+        'Ocp-Apim-Subscription-Key': MOMO_PRIMARY_KEY
     }
 
-        # Send the POST request with JSON data
-    try:
-        response = requests.post(token_url, headers=headers)
+    response = requests.get(url, headers=headers)
+    return JsonResponse(response.json())
 
-        # Check for successful response
-        if response.status_code == 200:
-            print("Request successful!")
-            # Print the response content
-            print("Response Text:", response.text)
-
-            # If the response is JSON, parse it
-            try:
-                print("Response JSON:", response.json())
-                result = json.loads( response.text )
-            except requests.exceptions.JSONDecodeError:
-                print("Response is not in JSON format.")
-        else:
-            print(f"Request failed with status code: {response.status_code}")
-            print("Error details:", response.text)
-
-    except requests.exceptions.RequestException as e:
-        print(f"An error occurred during the request: {e}")
-
-    return "Bearer " + result['access_token']
-
-
-def request_to_pay(request):
-    our_uuid = uuid.uuid4()
-
-    # Prepare the data as a Python dictionary
-    headers = {
-        "Authorization" : create_access_token(request),
-        "X-Reference-Id" : str(our_uuid),
-        "X-Target-Environment" : settings.TARGET_ENV,
-        "Ocp-Apim-Subscription-Key" : settings.SUB_KEY,
-    }
-
-    body = {
-        "amount": "1.04",
-        "currency": "ZAR",
-        "externalId": str(our_uuid),
-        "payer": {
-            "partyIdType": settings.PARTY_ID_TYPE,
-            "partyId": settings.PARTY_ID
-        },
-        "payerMessage": "how_are_you",
-        "payeeNote": "how_are_you"
-    }
-
-    # Send the POST request with JSON data
-    try:
-        response = requests.post(pay_url, headers=headers, data=json.dumps(body))
-
-        # Check for successful response
-        print( response.status_code )
-        print( response )
-        if response.status_code == 200:
-            print("Request successful!")
-        else:
-            print(f"Request failed with status code: {response.status_code}")
-            print("Error details:", response.text)
-
-    except requests.exceptions.RequestException as e:
-        print(f"An error occurred during the request: {e}")
+def payment_page(request):
+    """Render the payment page"""
+    return render(request, 'app/payment.html')

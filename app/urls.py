@@ -15,7 +15,9 @@ urlpatterns = [
     path('drivers/<int:driver_id>/', views.get_driver_info, name='get_driver_info'),
     path('history/<str:entity_type>/<int:entity_id>/', views.get_ride_history, name='get_ride_history'),
     path('create-ride/', views.create_ride, name='create_ride'),
-    path('payment/', views.request_to_pay, name='payment'),
+    path('payment/', views.payment_page, name='payment_page'),
+    path('api/momo/request-to-pay/', views.request_to_pay, name='momo_request_to_pay'),
+    path('api/momo/check-status/<str:reference_id>/', views.check_payment_status, name='momo_check_status'),
     path('', views.landing_page, name='landing_page'),
     path('dashboard/', views.dashboard, name='dashboard'), # Placeholder for dashboard
 ]
